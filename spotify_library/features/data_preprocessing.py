@@ -19,11 +19,11 @@ class data_preprocessing(metaclass=ABCMeta):
     
 class drop(data_preprocessing):
     """
-    Class for dropping specified columns of a DataFrame.
+    Class for dropping specified columns of a DataFrame
         
     Args:
-    data (pd.DataFrame): The DataFrame to be processed.
-    columns_to_drop (str or list): The column(s) to be dropped.        
+        data (pd.DataFrame): The DataFrame to be processed
+        columns_to_drop (str or list): The column(s) to be dropped        
     """
     def __init__(self, data, columns_to_drop):
         self.data = data
@@ -31,14 +31,14 @@ class drop(data_preprocessing):
         
     def drop_columns(self):
         """
-        FUnction to drop specified columns from the DataFrame.
+        FUnction to drop specified columns from the DataFrame
         
         
         Raises:
-        - ValueError: If any specified column is not found in the DataFrame.
+            ValueError: If any specified column is not found in the DataFrame
 
         Returns:
-        - pd.DataFrame: The DataFrame after dropping the specified columns.
+            pd.DataFrame: The DataFrame after dropping the specified columns
         """
         if isinstance(self.columns_to_drop, str):  # If a single column name is provided
             self.columns_to_drop = [self.columns_to_drop]  # Convert it to a list
@@ -52,11 +52,11 @@ class drop(data_preprocessing):
     
 class transform_columns(data_preprocessing):
     """
-    Class for transforming specified columns in a DataFrame.
+    Class for transforming specified columns in a DataFrame
 
     Args:
-    - data (pd.DataFrame): The DataFrame to be processed.
-    - columns (str): The column to be transformed.
+        data (pd.DataFrame): The DataFrame to be processed
+        columns (str): The column to be transformed
     """
     def __init__(self, data, columns):
         self.data = data
@@ -64,13 +64,13 @@ class transform_columns(data_preprocessing):
 
     def transform_ms_to_minutes(self):
         """
-        Transform a specified column by converting milliseconds to minutes and drop the original column.
+        Transform a specified column by converting milliseconds to minutes and drop the original column
 
         Raises:
-        - ValueError: If the specified column is not found in the DataFrame.
+            ValueError: If the specified column is not found in the DataFrame
 
         Returns:
-        - pd.DataFrame: The DataFrame after the specified transformation.
+            pd.DataFrame: The DataFrame after the specified transformation
         """
         if self.columns not in self.data.columns:
             raise ValueError(f"Column '{self.columns}' not found in the DataFrame.")

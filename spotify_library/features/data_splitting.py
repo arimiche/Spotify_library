@@ -1,4 +1,5 @@
 from sklearn.model_selection import train_test_split
+import pandas as pd
 
 #function to split the data into train and test data
 def splitdata(df: pd.DataFrame, test_size: float, random_state: int) -> tuple:

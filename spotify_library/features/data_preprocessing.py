@@ -8,17 +8,17 @@ class data_preprocessing(metaclass=ABCMeta):
     def __init__(self, name):
         self.name = name
         
-    @abstractmethod
-    def drop_columns(self):
-        return NotImplementedError
+        @abstractmethod
+        def drop_columns(self):
+            return NotImplementedError
         
-    @abstractmethod
-    def transform_columns(self):
-        return NotImplementedError
+        @abstractmethod
+        def transform_columns(self):
+            return NotImplementedError
         
-    @abstractmethod
-    def missing_values_table(self):
-        return NotImplementedError
+        @abstractmethod
+        def missing_values_table(self):
+             return NotImplementedError
         
     
 class drop(data_preprocessing):

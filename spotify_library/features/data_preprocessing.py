@@ -90,12 +90,14 @@ class transform_columns(data_preprocessing):
 
 
 class missing_values(data_preprocessing):
+
     """
     Class to work with missing values
         
     Args:
         data (pd.DataFrame): The DataFrame to be processed       
     """
+
     def __init__(self, data):
         self.data = data
 
@@ -103,8 +105,9 @@ class missing_values(data_preprocessing):
         Function to to create table of missing values
 
         Returns:
-            pd.DataFrame: return the dataframe with missing information
-        """        
+            return the table with missing information
+        """     
+
     def missing_values_table(self):
         # Total missing values
         mis_val = self.data.isnull().sum()

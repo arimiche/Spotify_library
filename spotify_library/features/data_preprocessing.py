@@ -8,17 +8,17 @@ class data_preprocessing(metaclass=ABCMeta):
     def __init__(self, name):
         self.name = name
         
-        @abstractmethod
-        def drop_columns(self):
-            return NotImplementedError
+    @abstractmethod
+    def drop_columns(self):
+        return NotImplementedError
         
-        @abstractmethod
-        def transform_columns(self):
-            return NotImplementedError
+    @abstractmethod
+    def transform_columns(self):
+        return NotImplementedError
         
-        @abstractmethod
-        def missing_values_table(self):
-             return NotImplementedError
+    @abstractmethod
+    def missing_values_table(self):
+        return NotImplementedError
         
     
 class drop(data_preprocessing):
@@ -96,10 +96,10 @@ class missing_values(data_preprocessing):
     Args:
         data (pd.DataFrame): The DataFrame to be processed       
     """
-    def __init__(self, df):
-        self.df = df
+    def __init__(self, data):
+        self.data = data
         
-    def missing_values_table(self, df):
+    def missing_values_table(self):
                 """
         Function to to create table of missing values
 
@@ -107,10 +107,10 @@ class missing_values(data_preprocessing):
             pd.DataFrame: return the dataframe with missing information
         """
         # Total missing values
-                mis_val = self.df.isnull().sum()
+                mis_val = self.data.isnull().sum()
         
         # Percentage of missing values
-                mis_val_percent = 100 * self.df.isnull().sum() / len(df)
+                mis_val_percent = 100 * self.data.isnull().sum() / len(df)
         
         # Make a table with the results
                 mis_val_table = pd.concat([mis_val, mis_val_percent], axis=1)

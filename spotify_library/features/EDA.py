@@ -89,9 +89,8 @@ class unique_count(eda):
         for column in self.columns:
             unique_count = self.data[column].nunique()
             unique_counts[column] = unique_count
-        # # Print the results
         for column, count in unique_counts.items():
             print(f"Number of unique values in {column}: {count}")
-            return unique_counts
+        return unique_counts
 
         

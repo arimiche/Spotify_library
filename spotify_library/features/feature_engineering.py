@@ -1,3 +1,5 @@
+import pandas as pd
+
 def create_binary_columns_for_keywords(df: pd.DataFrame, column:str) -> pd.DataFrame:
     """
     Create binary columns in a DataFrame based on the presence of given keywords in a specified column

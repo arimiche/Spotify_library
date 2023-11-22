@@ -20,6 +20,11 @@ class data_preprocessing(metaclass=ABCMeta):
         def missing_values_table(self):
              return NotImplementedError
         
+        @abstractmethod
+        def one_hot(self):
+             return NotImplementedError
+
+        
     
 class drop(data_preprocessing):
     """
@@ -130,3 +135,31 @@ class missing_values(data_preprocessing):
         
         # Return the dataframe with missing information
         return mis_val_table_ren_columns
+
+
+class dummies(data_preprocessing):
+
+    """
+    Class to create dummy variables.
+        
+    Args:
+        data (pd.DataFrame): The DataFrame to be processed 
+        columns (str): The names of the columns to create dummies.      
+    """
+
+    def __init__(self, data, columns):
+        self.data = data
+        self.columns = columns
+
+        """
+        Function to to create table of missing values
+
+        Returns:
+            return the table with missing information
+        """     
+
+    # Function to create dummies
+    def one_hot(self):
+        dummy = pd.get_dummies(self.data[self.columns])
+        encoded_df = pd.concat([self.data, dummy], axis=1)
+        return encoded_df

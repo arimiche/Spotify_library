@@ -1,4 +1,6 @@
 import pandas as pd
+from nltk.tokenize import word_tokenize
+from collections import Counter
 
 def create_binary_columns_for_keywords(df: pd.DataFrame, column:str) -> pd.DataFrame:
     """
@@ -40,3 +42,31 @@ def add_party_music_column(df: pd.DataFrame) -> pd.DataFrame:
     df['party_music'] = conditions.astype(int)
 
     return df
+
+def get_top_words(df, column_name, top_n=20):
+    
+    """
+    Tokenize and count the words in a specified column of a DataFrame.
+
+    Args:
+    - df (pd.DataFrame): The DataFrame containing the data.
+    - column_name (str): The name of the column in the DataFrame to analyze.
+    - top_n(int): optional (default=20). The number of top words to retrieve.
+
+    Returns:
+    - top_words (list): A list of the top N most frequent words in the specified column.
+    """
+
+    # Extract and clean the data from the specified column
+    column_data = df[column_name].dropna().astype(str)
+
+    # Tokenize and lowercase the words
+    all_words = [word.lower() for item in column_data for word in word_tokenize(item)]
+
+    # Count the occurrences of each word
+    word_counts = Counter(all_words)
+
+    # Get the top N most frequent words
+    top_words = [word for word, count in word_counts.most_common(top_n)]
+
+    return top_words

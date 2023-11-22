@@ -44,7 +44,7 @@ def add_party_music_column(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def get_top_words(df, column_name, top_n=20):
-    
+
     """
     Tokenize and count the words in a specified column of a DataFrame.
 
@@ -70,3 +70,29 @@ def get_top_words(df, column_name, top_n=20):
     top_words = [word for word, count in word_counts.most_common(top_n)]
 
     return top_words
+
+def create_dummy_variables(df, column_name, words_list):
+
+    """
+    Create dummy variables for specified words in a DataFrame column.
+
+    Parameters:
+    - df (pd.DataFrame): The DataFrame containing the data.
+    - column_name (str): The name of the column in the DataFrame to analyze.
+    - words_list (list): A list of words for which dummy variables should be created.
+
+    Raises Error: if the column does not exist in the DataFrame
+
+    Returns:
+    - df_with_dummies (pd.DataFrame): The DataFrame with additional columns for each word in words_list as dummy variables.
+    """
+
+    # Ensure the specified column exists
+    if column_name not in df.columns:
+        raise ValueError(f"Column '{column_name}' does not exist in the DataFrame.")
+
+    # Iterate over the words in the list and create dummy variables
+    for word in words_list:
+        df[word] = df[column_name].str.contains(word, case=False).astype(int)
+
+    return df

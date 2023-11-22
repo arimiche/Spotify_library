@@ -96,3 +96,30 @@ def create_dummy_variables(df, column_name, words_list):
         df[word] = df[column_name].str.contains(word, case=False).astype(int)
 
     return df
+
+def calculate_value_counts(df, columns, top_n=10):
+
+    """
+    Count the number and percentage of unique values in a DataFrame column.
+
+    Parameters:
+    - df (pd.DataFrame): The DataFrame containing the data.
+    - columns (str): The names of the column in the DataFrame to analyze.
+    - top_n(int): optional (default=10). The number of top "words" columns to retrieve.
+
+    Returns:
+    - The table, which contains count and precentage for every unique value in the column.
+    """
+
+    for column in columns:
+        # Calculate the count of each unique value
+        value_counts = df[column].value_counts()
+
+        # Calculate the percentage of each unique value
+        percentage = (value_counts / len(df)) * 100
+
+        # Create a new DataFrame to display the results
+        result_df = pd.DataFrame({column: value_counts.index, 'Count': value_counts, 'Percentage': percentage})
+
+        # Display the top values
+        print(result_df.head(top_n))

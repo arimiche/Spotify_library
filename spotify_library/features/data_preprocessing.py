@@ -23,6 +23,11 @@ class data_preprocessing(metaclass=ABCMeta):
         @abstractmethod
         def one_hot(self):
              return NotImplementedError
+        
+        @abstractmethod
+        def add_mean_column(self):
+            return NotImplementedError
+
 
         
     
@@ -158,8 +163,44 @@ class dummies(data_preprocessing):
             return the table with missing information
         """     
 
-    # Function to create dummies
     def one_hot(self):
         dummy = pd.get_dummies(self.data[self.columns])
         encoded_df = pd.concat([self.data, dummy], axis=1)
         return encoded_df
+
+class target_encoding(data_preprocessing):
+
+    """
+    Class to execute target encoding.
+        
+    Args:
+        - data (pd.DataFrame): The DataFrame to be processed 
+        - group_column (str): The name of the column by which the DataFrame should be grouped.
+    - target_column (str): The name of the column for which the mean values should be calculated.
+    - new_column_name (str): The name of the new column to be added to the DataFrame.      
+    """
+
+    def __init__(self, data, group_column, target_column, new_column_name):
+        self.data = data
+        self.group_column = group_column
+        self.target_columns = target_column
+        self.new_column_name = new_column_name
+
+        """
+        Function to add a new column to a DataFrame with the mean values of a target column grouped by another column.
+
+        Raises Error: if the column of interest doesn't exist in the DataFrame.
+
+        Returns:
+            The DataFrame with the new column added, containing the mean values of the target column grouped by the specified column.
+        """     
+
+    def add_mean_column(self):
+        # Ensure the specified columns exist
+        if self.group_column not in self.data.columns or self.target_column not in self.data.columns:
+            raise ValueError(f"One or more specified columns do not exist in the DataFrame.")
+
+        # Calculate the mean values and create a new column
+        self.data[self.new_column_name] = self.data.groupby(self.group_column)[self.target_column].transform('mean')
+
+        return self.data

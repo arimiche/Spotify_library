@@ -27,6 +27,11 @@ class eda(metaclass=ABCMeta):
         @abstractmethod
         def plot_correlation_heatmap(self):
             return NotImplementedError
+        
+        @abstractmethod
+        def plot_top_items(self):
+            return NotImplementedError
+
 
 
 class hist(eda):
@@ -161,7 +166,7 @@ class bar_plot_grouped(eda):
     def __init__(self, data, group_column, target_column, summary_function, top_n = 10):
         self.data = data
         self.group_column = group_column
-        self.target_column - target_column
+        self.target_column = target_column
         self.summary_function = summary_function
         self.top_n = top_n
 
@@ -200,4 +205,50 @@ class bar_plot_grouped(eda):
         # Show the plot
         plt.show()
 
+class plot_top(eda):
+
+    """
+    Class for bar plotting, mentioning two columns of the DataFrame as x-ticks.
+        
+    Args:
+    - data (DataFrame): The DataFrame containing the data.
+    - top_n (int): optional (default=10). The number of top items to display in the bar plot.
+    """
+
+    def __init__(self, data, top_n = 10):
+        self.data = data
+        self.top_n = top_n
+        self.columns = {}
+
+        """
+        Function or bar plotting, mentioning two columns of the DataFrame as xticks.
+
+        Args:
+        - *columns (variable length arguments): The columns to use for track, artist, popularity, etc. (in order).
+
+        Returns: displays the bar plot.
+        """
+
+    def plot_top_items(self, *columns):
+        # Sort the DataFrame by total popularity in descending order
+        sorted_df = self.data.sort_values(by=columns[-1], ascending=False)
+
+        # Select the top N most popular items
+        top_items = sorted_df.head(self.top_n)
+
+        # Combine column values for x-tick labels
+        item_labels = [' - '.join(map(str, item)) for item in zip(*[top_items[col] for col in columns[:-1]])]
+
+        # Create a bar plot
+        plt.figure(figsize=(8, 6))
+        plt.bar(item_labels, top_items[columns[-1]])
+        plt.xlabel(' - '.join(map(str, columns[:-1])))
+        plt.ylabel(columns[-1].capitalize())  # Capitalize the last column name for y-axis label
+        plt.title(f'Top {top_n} Most Popular {columns[-1].capitalize()}s')
+
+        # Set smaller x-tick font size and rotate
+        plt.xticks(rotation=90, fontsize=8)
+
+        # Show the plot
+        plt.show()
         

@@ -14,11 +14,10 @@ class data_preprocessing(metaclass=ABCMeta):
             return NotImplementedError
         
         @abstractmethod
-        def transform_columns(self):
+        def transform_ms_to_minutes(self):
             return NotImplementedError
         
         @abstractmethod
-
         def missing_values_table(self):
              return NotImplementedError
         
@@ -31,9 +30,6 @@ class data_preprocessing(metaclass=ABCMeta):
             return NotImplementedError
 
 
-
-        def encode(self):
-            return NotImplementedError
 
         
     
@@ -212,31 +208,3 @@ class target_encoding(data_preprocessing):
 
 
     
-class labelencode(data_preprocessing):
-
-    def __init__(self, data, columns, encoder):
-        self.data = data
-        self.columns = columns
-        self.encoder = encoder
-
-    def encode(self):
-        """
-        FUnction to encode specified columns from the DataFrame
-        
-        Raises:
-            ValueError: If any specified column is not found in the DataFrame
-
-        Returns:
-            pd.DataFrame: The DataFrame after adding encoded columns
-        """
-        if isinstance(self.columns, str):  # If a single column name is provided
-            self.columns = [self.columns]  # Convert it to a list
-
-        missing_columns = [col for col in self.columns if col not in self.data.columns]
-        if missing_columns:
-            raise ValueError(f"Columns {missing_columns} not found in the DataFrame.")
-
-        self.encoder = LabelEncoder()
-        self.data[f'{self.columns}_encoded'] = self.encoder.fit_transform(self.data[self.columns])
-
-        return self.data

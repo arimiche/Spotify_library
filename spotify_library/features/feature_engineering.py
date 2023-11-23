@@ -43,6 +43,7 @@ def add_party_music_column(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+
 def get_top_words(df, column_name, top_n=20):
 
     """
@@ -123,3 +124,39 @@ def calculate_value_counts(df, columns, top_n=10):
 
         # Display the top values
         print(result_df.head(top_n))
+
+def add_sleep_music_column(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add a binary variable column 'sleep_music' to a DataFrame based on specified conditions
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing columns 'instrumentalness', 'duration_minutes', and 'energy'
+
+    Returns:
+        pd.DataFrame: The DataFrame with an added 'sleep_music' column
+    """
+    conditions = (df['instrumentalness'] > 0.6) & (df['duration_minutes'] > 5) & (df['energy'] < 0.5)
+
+    # Add a binary variable column 'sleep_music' based on the specified conditions
+    df['sleep_music'] = conditions.astype(int)
+
+    return df
+
+def create_word_count_trackcolumn(df: pd.DataFrame, column:str) -> pd.DataFrame:
+    """
+    Create a new column 'word_count_track' with the total word count for each track name
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the column 'track_name'
+
+    Returns:
+        pd.DataFrame: The DataFrame with an added 'word_count_track' column
+    """
+    # Check if the specified column exists in the DataFrame
+    if column not in df.columns:
+        raise ValueError(f"Column '{column}' not found in the DataFrame.")
+    
+    #create the new column that counts how many words has each song
+    df['word_count_track'] = df[column].apply(lambda text: len(text.split()))
+    return df
+

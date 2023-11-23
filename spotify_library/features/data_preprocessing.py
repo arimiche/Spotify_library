@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 
 class data_preprocessing(metaclass=ABCMeta):
     """
@@ -17,6 +18,7 @@ class data_preprocessing(metaclass=ABCMeta):
             return NotImplementedError
         
         @abstractmethod
+
         def missing_values_table(self):
              return NotImplementedError
         
@@ -28,6 +30,10 @@ class data_preprocessing(metaclass=ABCMeta):
         def add_mean_column(self):
             return NotImplementedError
 
+
+
+        def encode(self):
+            return NotImplementedError
 
         
     
@@ -97,6 +103,7 @@ class transform_columns(data_preprocessing):
         self.data.drop(self.columns, axis=1, inplace=True)
 
         return self.data
+
 
 
 class missing_values(data_preprocessing):
@@ -202,5 +209,34 @@ class target_encoding(data_preprocessing):
 
         # Calculate the mean values and create a new column
         self.data[self.new_column_name] = self.data.groupby(self.group_column)[self.target_column].transform('mean')
+
+
+    
+class labelencode(data_preprocessing):
+
+    def __init__(self, data, columns, encoder):
+        self.data = data
+        self.columns = columns
+        self.encoder = encoder
+
+    def encode(self):
+        """
+        FUnction to encode specified columns from the DataFrame
+        
+        Raises:
+            ValueError: If any specified column is not found in the DataFrame
+
+        Returns:
+            pd.DataFrame: The DataFrame after adding encoded columns
+        """
+        if isinstance(self.columns, str):  # If a single column name is provided
+            self.columns = [self.columns]  # Convert it to a list
+
+        missing_columns = [col for col in self.columns if col not in self.data.columns]
+        if missing_columns:
+            raise ValueError(f"Columns {missing_columns} not found in the DataFrame.")
+
+        self.encoder = LabelEncoder()
+        self.data[f'{self.columns}_encoded'] = self.encoder.fit_transform(self.data[self.columns])
 
         return self.data

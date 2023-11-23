@@ -183,7 +183,7 @@ class target_encoding(data_preprocessing):
     def __init__(self, data, group_column, target_column, new_column_name):
         self.data = data
         self.group_column = group_column
-        self.target_columns = target_column
+        self.target_column = target_column
         self.new_column_name = new_column_name
 
         """

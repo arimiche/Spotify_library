@@ -244,7 +244,7 @@ class plot_top(eda):
         plt.bar(item_labels, top_items[columns[-1]])
         plt.xlabel(' - '.join(map(str, columns[:-1])))
         plt.ylabel(columns[-1].capitalize())  # Capitalize the last column name for y-axis label
-        plt.title(f'Top {top_n} Most Popular {columns[-1].capitalize()}s')
+        plt.title(f'Top {self.top_n} Most Popular {columns[-3].capitalize()}s')
 
         # Set smaller x-tick font size and rotate
         plt.xticks(rotation=90, fontsize=8)

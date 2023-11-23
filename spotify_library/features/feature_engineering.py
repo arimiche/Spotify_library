@@ -1,6 +1,7 @@
 import pandas as pd
 from nltk.tokenize import word_tokenize
 from collections import Counter
+from abc import ABCMeta, abstractmethod
 
 def create_binary_columns_for_keywords(df: pd.DataFrame, column:str) -> pd.DataFrame:
     """
@@ -43,42 +44,49 @@ def add_party_music_column(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+class words():
 
-def get_top_words(df, column_name, top_n=20):
+    """
+    Class to work 'most popular words' feature
+        
+    Args:
+        data (pd.DataFrame): The DataFrame to be processed      
+    """
+
+    def __init__(self, data):
+        self.data = data
 
     """
     Tokenize and count the words in a specified column of a DataFrame.
 
     Args:
-    - df (pd.DataFrame): The DataFrame containing the data.
     - column_name (str): The name of the column in the DataFrame to analyze.
     - top_n(int): optional (default=20). The number of top words to retrieve.
 
     Returns:
     - top_words (list): A list of the top N most frequent words in the specified column.
-    """
+     """
+    
+    def get_top_words(self, column_name, top_n=20):
+        
+        # Extract and clean the data from the specified column
+        column_data = self.data[column_name].dropna().astype(str)
+     
+        # Tokenize and lowercase the words
+        all_words = [word.lower() for item in column_data for word in word_tokenize(item)]
 
-    # Extract and clean the data from the specified column
-    column_data = df[column_name].dropna().astype(str)
+        # Count the occurrences of each word
+        word_counts = Counter(all_words)
 
-    # Tokenize and lowercase the words
-    all_words = [word.lower() for item in column_data for word in word_tokenize(item)]
+        # Get the top N most frequent words
+        top_words = [word for word, count in word_counts.most_common(top_n)]
 
-    # Count the occurrences of each word
-    word_counts = Counter(all_words)
-
-    # Get the top N most frequent words
-    top_words = [word for word, count in word_counts.most_common(top_n)]
-
-    return top_words
-
-def create_dummy_variables(df, column_name, words_list):
-
+        return top_words
+    
     """
     Create dummy variables for specified words in a DataFrame column.
 
-    Parameters:
-    - df (pd.DataFrame): The DataFrame containing the data.
+    Args:
     - column_name (str): The name of the column in the DataFrame to analyze.
     - words_list (list): A list of words for which dummy variables should be created.
 
@@ -88,23 +96,21 @@ def create_dummy_variables(df, column_name, words_list):
     - df_with_dummies (pd.DataFrame): The DataFrame with additional columns for each word in words_list as dummy variables.
     """
 
-    # Ensure the specified column exists
-    if column_name not in df.columns:
-        raise ValueError(f"Column '{column_name}' does not exist in the DataFrame.")
+    def create_dummy_variables(self, column_name, words_list):
+        # Ensure the specified column exists
+        if column_name not in df.columns:
+            raise ValueError(f"Column '{column_name}' does not exist in the DataFrame.")
 
-    # Iterate over the words in the list and create dummy variables
-    for word in words_list:
-        df[word] = df[column_name].str.contains(word, case=False).astype(int)
+        # Iterate over the words in the list and create dummy variables
+        for word in words_list:
+            self.data[word] = self.data[column_name].str.contains(word, case=False).astype(int)
 
-    return df
-
-def calculate_value_counts(df, columns, top_n=10):
-
+        return self.data
+    
     """
     Count the number and percentage of unique values in a DataFrame column.
 
-    Parameters:
-    - df (pd.DataFrame): The DataFrame containing the data.
+    Args:
     - columns (str): The names of the column in the DataFrame to analyze.
     - top_n(int): optional (default=10). The number of top "words" columns to retrieve.
 
@@ -112,18 +118,20 @@ def calculate_value_counts(df, columns, top_n=10):
     - The table, which contains count and precentage for every unique value in the column.
     """
 
-    for column in columns:
-        # Calculate the count of each unique value
-        value_counts = df[column].value_counts()
+    def calculate_value_counts(self, columns, top_n=10):
 
-        # Calculate the percentage of each unique value
-        percentage = (value_counts / len(df)) * 100
+        for column in columns:
+            # Calculate the count of each unique value
+            value_counts = self.data[column].value_counts()
 
-        # Create a new DataFrame to display the results
-        result_df = pd.DataFrame({column: value_counts.index, 'Count': value_counts, 'Percentage': percentage})
+            # Calculate the percentage of each unique value
+            percentage = (value_counts / len(self.data)) * 100
 
-        # Display the top values
-        print(result_df.head(top_n))
+            # Create a new DataFrame to display the results
+            result_df = pd.DataFrame({column: value_counts.index, 'Count': value_counts, 'Percentage': percentage})
+
+            # Display the top values
+            print(result_df.head(top_n))
 
 def add_sleep_music_column(df: pd.DataFrame) -> pd.DataFrame:
     """

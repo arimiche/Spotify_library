@@ -25,7 +25,7 @@ class eda(metaclass=ABCMeta):
             return NotImplementedError
         
         @abstractmethod
-        def plot_correlation_heatmap(self):
+        def bar_plot(self):
             return NotImplementedError
         
         @abstractmethod
@@ -178,7 +178,7 @@ class bar_plot_grouped(eda):
         Returns: displays the bar plot.
         """
 
-    def plot_correlation_heatmap(self):
+    def bar_plot(self):
         # Validate summary function
         if self.summary_function not in ['sum', 'mean', 'median', 'mode']:
             raise ValueError(f"Invalid summary function. Supported functions: 'sum', 'mean', 'median', 'mode'.")

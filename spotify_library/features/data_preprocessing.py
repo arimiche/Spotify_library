@@ -122,5 +122,7 @@ def add_mean_column(data, group_column, target_column, new_column_name):
     # Calculate the mean values and create a new column
     data[new_column_name] = data.groupby(group_column)[target_column].transform('mean')
 
+    return data
+
 
     

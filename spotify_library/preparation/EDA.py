@@ -252,3 +252,16 @@ class plot_top(eda):
         # Show the plot
         plt.show()
         
+
+def looking_for_outliers(data):
+    numerical_columns = [col for col in data.select_dtypes(include='number').columns]
+    plt.figure(figsize=(15, 8))
+
+    sns.boxplot(data=data[numerical_columns], orient="h", palette="Set2")
+    plt.title("Boxplots")
+    plt.xlabel("Value")
+
+    plt.tight_layout()
+
+    # Show the plot
+    plt.show()

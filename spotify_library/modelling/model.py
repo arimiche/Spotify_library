@@ -11,9 +11,13 @@ class Modeling(metaclass=ABCMeta):
     @abstractmethod
     def trainmodel(self):
         return NotImplementedError
-        
+            
     @abstractmethod
     def predictmodel(self):
+        return NotImplementedError
+    
+    @abstractmethod
+    def coefficients(self):
         return NotImplementedError
 
 
@@ -37,6 +41,28 @@ class LinearModel(Modeling):
         y_pred = self._model.predict(X_test)
         return y_pred
     
+    def coefficients(self):  
+        X_train = self.traindata[self._features] 
+        feature_names = X_train.columns
+        feature_values_lin = self._model.coef_
+
+        # Create a DataFrame with feature names and coefficients
+        linear_coeff = pd.DataFrame({'Feature': feature_names, 'Coefficient': feature_values_lin.flatten()})
+
+
+        # Sort the DataFrame by the values of coefficients in descending order
+        linear_coeff = linear_coeff.sort_values(by='Coefficient', ascending=False)
+
+
+        # Print the sorted DataFrame
+        print("Top 10 positive coefficients:")
+        print(linear_coeff.head(10))
+
+        print("\nTop 10 negative coefficients:")
+        print(linear_coeff.tail(10)[::-1])  
+        
+
+
 class LassoModel(Modeling):
 
     def __init__(self, traindata, testdata, alpha=0.5):
@@ -58,6 +84,26 @@ class LassoModel(Modeling):
         y_pred = self._model.predict(X_test)
         return y_pred
     
+    def coefficients(self):  
+        X_train = self.traindata[self._features] 
+        feature_names = X_train.columns
+        feature_values_lin = self._model.coef_
+
+        # Create a DataFrame with feature names and coefficients
+        Lasso_coeff = pd.DataFrame({'Feature': feature_names, 'Coefficient': feature_values_lin.flatten()})
+
+
+        # Sort the DataFrame by the values of coefficients in descending order
+        Lasso_coeff = Lasso_coeff.sort_values(by='Coefficient', ascending=False)
+
+
+        # Print the sorted DataFrame
+        print("Top 10 positive coefficients:")
+        print(Lasso_coeff.head(10))
+
+        print("\nTop 10 negative coefficients:")
+        print(Lasso_coeff.tail(10)[::-1])  
+    
 class RidgeModel(Modeling):
 
     def __init__(self, traindata, testdata, alpha=0.5):
@@ -78,6 +124,26 @@ class RidgeModel(Modeling):
         X_test = self.testdata[self._features] 
         y_pred = self._model.predict(X_test)
         return y_pred
+    
+    def coefficients(self):  
+        X_train = self.traindata[self._features] 
+        feature_names = X_train.columns
+        feature_values_lin = self._model.coef_
+
+        # Create a DataFrame with feature names and coefficients
+        Ridge_coeff = pd.DataFrame({'Feature': feature_names, 'Coefficient': feature_values_lin.flatten()})
+
+
+        # Sort the DataFrame by the values of coefficients in descending order
+        Ridge_coeff = Ridge_coeff.sort_values(by='Coefficient', ascending=False)
+
+
+        # Print the sorted DataFrame
+        print("Top 10 positive coefficients:")
+        print(Ridge_coeff.head(10))
+
+        print("\nTop 10 negative coefficients:")
+        print(Ridge_coeff.tail(10)[::-1])  
     
 def model_performance(y_true, y_pred):
     # Calculate Mean Squared Error (MSE)
@@ -114,4 +180,4 @@ def hyperparameter_tuning(prediction_model, X_train, y_train, X_test, y_test):
 
     # Print the best alpha and minimum MSE 
     print("Best alpha:", best_alpha)
-    print("Best MSE:", min_mse,)      
+    print("Best MSE:", min_mse,)  

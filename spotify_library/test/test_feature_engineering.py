@@ -20,6 +20,7 @@ class Test_Add_Party_Music_Column(unittest.TestCase):
             'loudness': [-4, -6, -3],
             'energy': [0.6, 0.7, 0.8],
             'party_music': [1, 0, 1]})
+        expected_result['party_music'] = expected_result['party_music'].astype('int32')
         assert_frame_equal(output, expected_result)
 
     def test_novalue_add_party_music_column(self):

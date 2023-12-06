@@ -1,4 +1,3 @@
-#%%
 import sys
 sys.path.append(r'C:/Users/arimi/Documents/BSE-term1/ComputingData/Final_project_Arianna_Vanessa_Tatiana')
 from spotify_library.features.feature_engineering import *
@@ -7,7 +6,6 @@ import pandas as pd
 from pandas.testing import *
 
 
-#%%
 class Test_Add_Party_Music_Column(unittest.TestCase):
 
     def test_normal_add_party_music_column(self):
@@ -45,7 +43,6 @@ class Test_Add_Party_Music_Column(unittest.TestCase):
             add_party_music_column(example_input)
 
 
-#%%
 class Test_Add_Sleep_Music_Column(unittest.TestCase):
 
     def test_normal_add_sleep_music_column(self):

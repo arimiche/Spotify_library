@@ -1,4 +1,6 @@
 pandas>=1.0.0
 numpy>=1.0.0
 scikit-learn>=1.0.0
+unittest>=1.0.0
 jupyter
+

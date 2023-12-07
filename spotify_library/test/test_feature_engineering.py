@@ -1,13 +1,14 @@
-#%%
 import sys
 sys.path.append(r'C:/Users/arimi/Documents/BSE-term1/ComputingData/Final_project_Arianna_Vanessa_Tatiana')
 from spotify_library.features.feature_engineering import *
 import unittest
 import pandas as pd
 from pandas.testing import *
+import nltk
+nltk.download('punkt')
 
 
-class Test_Add_Party_Music_Column(unittest.TestCase):
+class TestAddPartyMusicColumn(unittest.TestCase):
 
     def test_normal_add_party_music_column(self):
         example_data = {'danceability': [0.6, 0.4, 0.7],
@@ -45,8 +46,25 @@ class Test_Add_Party_Music_Column(unittest.TestCase):
             example_input = pd.DataFrame(example_data)
             add_party_music_column(example_input)
 
-#%%
-class Test_Add_Sleep_Music_Column(unittest.TestCase):
+class TestGetTopWords(unittest.TestCase):
+
+    def test_normal_get_top_words(self):
+        data = {'text_column': ['This is a sample sentence',
+                                'Another sentence for testing',
+                                'This is the third sentence'],
+                'duration_minutes': [6, 2, 3]}
+        example_input = pd.DataFrame(data)
+        top_words = get_top_words(example_input, column_name='text_column', top_n=3)
+        expected_results = ['sentence', 'this', 'is']
+        self.assertEqual(top_words, expected_results)
+
+    def test_empty_get_top_words(self):
+        with self.assertRaises(KeyError):
+            empty_df = pd.DataFrame()
+            top_words = get_top_words(empty_df, column_name='text_column', top_n=3)
+
+
+class TestAddSleepMusicColumn(unittest.TestCase):
 
     def test_normal_add_sleep_music_column(self):
         example_data = {'instrumentalness': [0.8, 0.3, 0.2],
@@ -75,4 +93,3 @@ class Test_Add_Sleep_Music_Column(unittest.TestCase):
             'sleep_music': []})
         expected_result['sleep_music'] = expected_result['sleep_music'].astype('int32')
         self.assertTrue(expected_result.equals(output)) 
-

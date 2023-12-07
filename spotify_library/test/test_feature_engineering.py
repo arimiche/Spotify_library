@@ -24,17 +24,18 @@ class Test_Add_Party_Music_Column(unittest.TestCase):
         assert_frame_equal(output, expected_result)
 
     def test_novalue_add_party_music_column(self):
-        example_data = {'danceability': [0.3, 0.4, 0.7],
-                'loudness': [-4, -6, -3],
-                'energy': [0.6, 0.7, 0.1]}
+        example_data = {'danceability': [0.2, 0.4, 0.1],
+                'loudness': [-7, -6, -7],
+                'energy': [0.2, 0.2, 0.3]}
         example_input = pd.DataFrame(example_data)
         output = add_party_music_column(example_input)
         expected_result = pd.DataFrame({
-            'danceability': [0.6, 0.4, 0.7],
-            'loudness': [-4, -6, -3],
-            'energy': [0.6, 0.7, 0.8],
+            'danceability': [0.2, 0.4, 0.1],
+            'loudness': [-7, -6, -7],
+            'energy': [0.2, 0.2, 0.3],
             'party_music': [0, 0, 0]})
-        self.assertTrue(expected_result.equals(output)) 
+        expected_result['party_music'] = expected_result['party_music'].astype('int32')
+        assert_frame_equal(output, expected_result) 
 
     def test_string_add_party_music_column(self):
         with self.assertRaises(TypeError):
@@ -58,6 +59,7 @@ class Test_Add_Sleep_Music_Column(unittest.TestCase):
             'duration_minutes': [6, 2, 3],
             'energy': [0.2, 0.7, 0.8],
             'sleep_music': [1, 0, 0]})
+        expected_result['sleep_music'] = expected_result['sleep_music'].astype('int32')
         pd.testing.assert_frame_equal(output, expected_result)
 
     def test_empty_add_sleep_music_column(self):
@@ -71,5 +73,6 @@ class Test_Add_Sleep_Music_Column(unittest.TestCase):
             'duration_minutes': [],
             'energy': [],
             'sleep_music': []})
+        expected_result['sleep_music'] = expected_result['sleep_music'].astype('int32')
         self.assertTrue(expected_result.equals(output)) 
 

@@ -7,7 +7,7 @@ from pandas.testing import *
 
 class TestDropColumns(unittest.TestCase):
 
-    def test_norma_drop_columns(self):
+    def test_normal_drop_columns(self):
         data = {'A': [1, 2, 3], 'B': [4, 5, 6], 'C': [7, 8, 9]}
         df = pd.DataFrame(data)
         result_df = drop_columns(df, columns_to_drop='B')

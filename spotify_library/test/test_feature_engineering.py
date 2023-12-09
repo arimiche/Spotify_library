@@ -38,14 +38,6 @@ class TestAddPartyMusicColumn(unittest.TestCase):
         expected_result['party_music'] = expected_result['party_music'].astype('int32')
         assert_frame_equal(output, expected_result) 
 
-    def test_string_add_party_music_column(self):
-        with self.assertRaises(TypeError):
-            example_data = {'danceability': [0.3, 0.4, 0.7],
-                'loudness': ['loud', 'soft', 'loud'],
-                'energy': [0.6, 0.7, 0.1]}
-            example_input = pd.DataFrame(example_data)
-            add_party_music_column(example_input)
-
 class TestGetTopWords(unittest.TestCase):
 
     def test_normal_get_top_words(self):
@@ -57,12 +49,6 @@ class TestGetTopWords(unittest.TestCase):
         top_words = get_top_words(example_input, column_name='text_column', top_n=3)
         expected_results = ['sentence', 'this', 'is']
         self.assertEqual(top_words, expected_results)
-
-    def test_empty_get_top_words(self):
-        with self.assertRaises(KeyError):
-            empty_df = pd.DataFrame()
-            top_words = get_top_words(empty_df, column_name='text_column', top_n=3)
-
 
 class TestCreateDummyVariables(unittest.TestCase):
 

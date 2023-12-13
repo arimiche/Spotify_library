@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import math
 import seaborn as sns
+import pandas as pd
 
 
 def plot_distribution(data, variables, bins=10, plots_per_row=2):
